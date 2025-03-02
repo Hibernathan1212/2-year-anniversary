@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Display a sweet message
         setTimeout(function() {
-            alert("I love you more than words can express. Happy 2 Year Anniversary! ♥");
+            alert("I love you more. Happy 2 Year Anniversary Baby! ♥");
         }, 500);
     });
     
