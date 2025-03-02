@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reasons I Love You</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="style.css"> -->
+        <!-- <script src="script.js"></script>  -->
+    <style>
+        /* :root {
+            --primary-color: #e84393;
+            --secondary-color: #fd79a8;
+            --accent-color: #f368e0;
+            --dark-color: #2d3436;
+            --light-color: #ffffff;
+            --bg-color: #f9f9f9;
+        } */
+
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #778beb;
+            --accent-color: #f8a5c2;
+            --dark-color: #303952;
+            --light-color: #ffffff;
+            --gradient-1: linear-gradient(135deg, #ff6b6b, #ff9ff3);
+            --gradient-2: linear-gradient(135deg, #778beb, #70a1ff);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(247, 241, 227, 0.9)); */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Navigation */
+        .main-nav {
+            background-color: var(--light-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--light-color);
+            text-align: center;
+            padding: 120px 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeIn 1.5s ease;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-weight: 300;
+            animation: slideUp 1.5s ease;
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            transform: rotate(45deg);
+            animation: float 15s linear infinite;
+        }
+        
+        .floating-heart:before,
+        .floating-heart:after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .floating-heart:before {
+            top: -20px;
+            left: 0;
+        }
+        
+        .floating-heart:after {
+            top: 0;
+            left: -20px;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Compliments Section */
+        .compliments-section {
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+        }
+        
+        .compliments-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .compliment-card {
+            background-color: var(--light-color);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: all 0.3s ease;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .compliment-card:hover {
+            transform: translateY(-10px) !important;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .compliment-card::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .compliment-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--light-color);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .compliment-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--dark-color);
+            font-weight: 400;
+        }
+        
+        /* Categories */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            background: none;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 20px;
+            margin: 5px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+        }
+        
+        /* Search Box */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 15px 25px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(232, 67, 147, 0.2);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Add More Button */
+        .add-more-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .add-more-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--light-color);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(232, 67, 147, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .add-more-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(232, 67, 147, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .footer-text {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .heart-icon {
+            color: var(--primary-color);
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            14% {
+                transform: scale(1.3);
+            }
+            28% {
+                transform: scale(1);
+            }
+            42% {
+                transform: scale(1.3);
+            }
+            70% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .compliments-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="logo">Two Years Together</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="memories.html">Our Memories</a></li>
+                <li><a href="compliments.html" class="active">Reasons I Love You</a></li>
+                <li><a href="more.html">I Love You More</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header">
+        <div class="floating-hearts">
+            <div class="floating-heart" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
+            <div class="floating-heart" style="left: 20%; animation-duration: 15s; animation-delay: 2s;"></div>
+            <div class="floating-heart" style="left: 30%; animation-duration: 18s; animation-delay: 4s;"></div>
+            <div class="floating-heart" style="left: 40%; animation-duration: 14s; animation-delay: 1s;"></div>
+            <div class="floating-heart" style="left: 50%; animation-duration: 16s; animation-delay: 0s;"></div>
+            <div class="floating-heart" style="left: 60%; animation-duration: 13s; animation-delay: 3s;"></div>
+            <div class="floating-heart" style="left: 70%; animation-duration: 17s; animation-delay: 2s;"></div>
+            <div class="floating-heart" style="left: 80%; animation-duration: 15s; animation-delay: 5s;"></div>
+            <div class="floating-heart" style="left: 90%; animation-duration: 14s; animation-delay: 1s;"></div>
+        </div>
+        <div class="header-content container">
+            <h1 class="page-title">100 Reasons I Love You</h1>
+            <p class="page-subtitle">Every little thing that makes you special to me, from your smile to your soul.</p>
+        </div>
+    </header>
+
+    <!-- Compliments Section -->
+    <section class="compliments-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchBox" placeholder="Search for a specific reason...">
+            </div>
+            
+            <div class="category-filter">
+                <button class="filter-btn active" data-filter="all">All Reasons</button>
+                <button class="filter-btn" data-filter="personality">Personality</button>
+                <button class="filter-btn" data-filter="moments">Special Moments</button>
+                <button class="filter-btn" data-filter="qualities">Amazing Qualities</button>
+                <button class="filter-btn" data-filter="looks">Beautiful Inside & Out</button>
+            </div>
+            
+            <div class="compliments-container" id="complimentsContainer">
+                <!-- Personality Category -->
+                <div class="compliment-card" data-category="personality">
+                    <span class="compliment-number">1</span>
+                    <p class="compliment-text">Your infectious laugh that brightens even my darkest days.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="personality">
+                    <span class="compliment-number">2</span>
+                    <p class="compliment-text">The way your eyes crinkle when you smile with your whole heart.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="personality">
+                    <span class="compliment-number">3</span>
+                    <p class="compliment-text">Your endless kindness that you show to everyone you meet.</p>
+                </div>
+                
+                <!-- Special Moments Category -->
+                <div class="compliment-card" data-category="moments">
+                    <span class="compliment-number">4</span>
+                    <p class="compliment-text">The way you held my hand during our first movie date.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="moments">
+                    <span class="compliment-number">5</span>
+                    <p class="compliment-text">Your excitement when we found our apartment together.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="moments">
+                    <span class="compliment-number">6</span>
+                    <p class="compliment-text">How you remember little details about the stories I tell you.</p>
+                </div>
+                
+                <!-- Amazing Qualities Category -->
+                <div class="compliment-card" data-category="qualities">
+                    <span class="compliment-number">7</span>
+                    <p class="compliment-text">Your creativity that seems to have no limits.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="qualities">
+                    <span class="compliment-number">8</span>
+                    <p class="compliment-text">Your ability to make anyone feel comfortable and welcome.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="qualities">
+                    <span class="compliment-number">9</span>
+                    <p class="compliment-text">Your strength and resilience that inspire me every day.</p>
+                </div>
+                
+                <!-- Beautiful Inside & Out Category -->
+                <div class="compliment-card" data-category="looks">
+                    <span class="compliment-number">10</span>
+                    <p class="compliment-text">Your beautiful smile that makes my heart skip a beat.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="looks">
+                    <span class="compliment-number">11</span>
+                    <p class="compliment-text">The adorable face you make when you're concentrating on something.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="looks">
+                    <span class="compliment-number">12</span>
+                    <p class="compliment-text">How effortlessly beautiful you look in the morning light.</p>
+                </div>
+                
+                <!-- Continue with more compliments... -->
+                <!-- Add more compliment cards here as needed -->
+                <div class="compliment-card" data-category="personality">
+                    <span class="compliment-number">13</span>
+                    <p class="compliment-text">Your passion for helping others and making a difference.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="moments">
+                    <span class="compliment-number">14</span>
+                    <p class="compliment-text">The way you surprise me with little gifts just because.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="qualities">
+                    <span class="compliment-number">15</span>
+                    <p class="compliment-text">Your incredible patience, especially when I'm being difficult.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="looks">
+                    <span class="compliment-number">16</span>
+                    <p class="compliment-text">How you look perfect in anything you wear.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="personality">
+                    <span class="compliment-number">17</span>
+                    <p class="compliment-text">Your unique perspective that helps me see the world differently.</p>
+                </div>
+                
+                <div class="compliment-card" data-category="moments">
+                    <span class="compliment-number">18</span>
+                    <p class="compliment-text">Our late-night conversations that I never want to end.</p>
+                </div>
+                
+                <!-- Add as many as you need, following the same pattern -->
+            </div>
+            
+            <div class="add-more-container">
+                <a href="#" class="add-more-btn" id="loadMoreBtn">Show Me More Reasons</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="footer-text">Made with <i class="fas fa-heart heart-icon"></i> for the love of my life</p>
+            <p>&copy; 2025 | Nathan Thurber</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation for compliment cards
+            const complimentCards = document.querySelectorAll('.compliment-card');
+            complimentCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll('.compliment-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    cards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = '';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 100);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(50px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+            
+            // Search functionality
+            const searchBox = document.getElementById('searchBox');
+            searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                cards.forEach(card => {
+                    const text = card.querySelector('.compliment-text').textContent.toLowerCase();
+                    
+                    if (text.includes(searchTerm)) {
+                        card.style.display = '';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(50px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+            
+            // Load More button functionality
+            // This simulates loading more compliments, but you'd likely replace this with your actual content
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            let currentCompliments = 18; // Starting number of compliments
+            
+            loadMoreBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const complimentsContainer = document.getElementById('complimentsContainer');
+                
+                // Sample compliments to add - you would replace these with your own
+                const newCompliments = [
+                    { number: 19, text: "The way you care for others around you.", category: "personality" },
+                    { number: 20, text: "How you always know exactly what to say to make me feel better.", category: "qualities" },
+                    { number: 21, text: "Your adorable dance moves when your favorite song comes on.", category: "moments" },
+                    { number: 22, text: "The sparkle in your eyes when you talk about your passions.", category: "looks" },
+                    { number: 23, text: "How you can make even the most ordinary day feel special.", category: "moments" },
+                    { number: 24, text: "Your determination to achieve your goals no matter what.", category: "qualities" }
+                ];
+                
+                for (let i = 0; i < 6; i++) {
+                    const card = document.createElement('div');
+                    const compliment = newCompliments[currentCompliments - 18 + i]
+                    card.className = 'compliment-card';
+                    card.setAttribute('data-category', compliment.category);
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(50px)';
+                    card.style.animationDelay = `${i * 10}s`;
+                    
+                    card.innerHTML = `
+                        <span class="compliment-number">${compliment.number}</span>
+                        <p class="compliment-text">${compliment.text}</p>
+                    `;
+                    
+                    complimentsContainer.appendChild(card);
+                    
+                    // Trigger animation after a small delay to ensure the DOM has updated
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+
+                // // Add the new compliments to the container
+                // newCompliments.forEach((compliment, index) => {
+                //     const card = document.createElement('div');
+                //     card.className = 'compliment-card';
+                //     card.setAttribute('data-category', compliment.category);
+                //     card.style.opacity = '0';
+                //     card.style.transform = 'translateY(50px)';
+                //     card.style.animationDelay = `${index * 0.1}s`;
+                    
+                //     card.innerHTML = `
+                //         <span class="compliment-number">${compliment.number}</span>
+                //         <p class="compliment-text">${compliment.text}</p>
+                //     `;
+                    
+                //     complimentsContainer.appendChild(card);
+                    
+                //     // Trigger animation after a small delay to ensure the DOM has updated
+                //     setTimeout(() => {
+                //         card.style.opacity = '1';
+                //         card.style.transform = 'translateY(0)';
+                //     }, 100);
+                // });
+                
+                // Update the current number of compliments
+                currentCompliments += 6;
+                
+                // If we've reached a certain number, hide the load more button
+                if (currentCompliments >= 100) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

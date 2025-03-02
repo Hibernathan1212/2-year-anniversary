@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love You More</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script src="script.js"></script> 
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #778beb;
+            --accent-color: #f8a5c2;
+            --dark-color: #303952;
+            --light-color: #f7f1e3;
+            --gradient-1: linear-gradient(135deg, #ff6b6b, #ff9ff3);
+            --gradient-2: linear-gradient(135deg, #778beb, #70a1ff);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark-color);
+            background-color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        p {
+            line-height: 1.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .main-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+            animation: fadeIn 1s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .nav-links li:nth-child(1) { animation-delay: 0.1s; }
+        .nav-links li:nth-child(2) { animation-delay: 0.2s; }
+        .nav-links li:nth-child(3) { animation-delay: 0.3s; }
+        .nav-links li:nth-child(4) { animation-delay: 0.4s; }
+
+        .nav-links li a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav-links li a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: var(--transition);
+        }
+
+        .nav-links li a:hover:after,
+        .nav-links li a.active:after {
+            width: 100%;
+        }
+
+        /* Custom styles for the "I Love You More" page */
+        .more-section {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .more-intro {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #ff6b6b, #ff8e8e);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .more-intro h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .more-intro p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        .infiniteScroll {
+            height: 1000vh;
+            background: linear-gradient(to bottom, #ff8e8e, #ffb3b3, #ffd6d6, #ff9e9e, #ff7a7a, #ff5252);
+            position: relative;
+        }
+
+        .milestone {
+            position: absolute;
+            width: 100%;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            transition: opacity 0.5s, transform 0.5s;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        .milestone.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .milestone h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .milestone p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .counter {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            opacity: 0;
+            animation: float-heart 15s linear infinite;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .final-section {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #ff5252, #ff0000);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .final-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .final-section p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 3rem;
+        }
+
+        .heart-button {
+            background: white;
+            color: #ff5252;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .heart-explosion {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+
+        .explosion-heart {
+            position: absolute;
+            font-size: 2rem;
+            color: white;
+            animation: explode 2s forwards;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes float-heart {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .more-intro h1 {
+                font-size: 3rem;
+            }
+            .more-intro p, .final-section p {
+                font-size: 1.2rem;
+            }
+            .milestone h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="logo">Two Years Together</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="memories.html">Our Memories</a></li>
+                <li><a href="compliments.html">Reasons I Love You</a></li>
+                <li><a href="more.html" class="active">I Love You More</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Intro Section -->
+    <section class="more-intro">
+        <h1>I Love You More</h1>
+        <p>Proof I love you more</p>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Infinite Scroll Section -->
+    <div class="counter">Love Level: <span id="love-counter">0</span>%</div>
+    <div class="heart-container" id="heart-container"></div>
+
+    <div class="infiniteScroll" id="infiniteScroll">
+        <!-- Milestones will be dynamically positioned -->
+    </div>
+
+    <!-- Final Section -->
+    <section class="final-section">
+        <h2>Infinity × Infinity</h2>
+        <p>After all this scrolling, you've reached the end of how much I love you... Just kidding, there is no end. My love for you grows every day, with every second and moment we share together.</p>
+        <p>Happy 2 year anniversary baby. I love you more.</p>
+    </section>
+
+    <div class="heart-explosion" id="heartExplosion"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const counter = document.getElementById('love-counter');
+            const heartContainer = document.getElementById('heart-container');
+            const infiniteScroll = document.getElementById('infiniteScroll');
+            const heartExplosion = document.getElementById('heartExplosion');
+            let loveValue = 0;
+            let lastScrollTop = 0;
+            
+            // Define milestone content
+            const milestoneContent = [
+                {
+                    value: 10,
+                    title: "More than all the grains of sand on earth (around 7.5*10^21)",
+                    text: "Every grain of sand on every beach in the world couldn't match the number of things I love about you"
+                },
+                {
+                    value: 20,
+                    title: "I love you more than the number of stars in the sky (around 2*10^23)",
+                    text: "Even just the number of ways I love you is more than the number of stars in the universe"
+                },
+                {
+                    value: 30,
+                    title: "More than my legos",
+                    text: "And you know how much I love my legos"
+                },
+                {
+                    value: 40,
+                    title: "More than I loved you yesterday",
+                    text: "And less than tomorrow. Because my love always grows stronger with each day"
+                },
+                {
+                    value: 50,
+                    title: "More than all the songs ever written",
+                    text: "The sound of your voice is more musical than any song I've ever heard. Every love song ever written is just trying to capture a fraction of what I feel for you"
+                },
+                {
+                    value: 60,
+                    title: "More than the rate of increase of the busy beaver function",
+                    text: "My love grows faster than the busy beaver function (the fastest growing function currently known)"
+                },
+                {
+                    value: 70,
+                    title: "More than my hate for ROTC",
+                    text: "My feelings for you are greater than any other feeling I could have for anything (good or bad)"
+                },
+                {
+                    value: 80,
+                    title: "More than your love for me",
+                    text: "My loving capapcity greater than yours since I'm taller and bigger"
+                },
+                {
+                    value: 90,
+                    title: "More than infinity",
+                    text: "Because even infinity has limits, but my love for you doesn't have any"
+                },
+                {
+                    value: 99,
+                    title: "Almost there...",
+                    text: "Keep scrolling"
+                }
+            ];
+            
+            // Create milestone elements
+            milestoneContent.forEach(milestone => {
+                const milestoneElement = document.createElement('div');
+                milestoneElement.className = 'milestone';
+                milestoneElement.dataset.value = milestone.value;
+                milestoneElement.innerHTML = `
+                    <h2>${milestone.title}</h2>
+                    <p>${milestone.text}</p>
+                `;
+                infiniteScroll.appendChild(milestoneElement);
+            });
+            
+            // Get all milestone elements after they've been created
+            const milestones = document.querySelectorAll('.milestone');
+            
+            // Position milestones evenly throughout the infinite scroll
+            const totalHeight = infiniteScroll.offsetHeight;
+            milestones.forEach((milestone, index) => {
+                const position = (totalHeight / milestones.length) * index;
+                milestone.style.top = position + 'px';
+            });
+            
+            // Create floating hearts
+            for (let i = 0; i < 50; i++) {
+                createFloatingHeart();
+            }
+            
+            // Function to create a floating heart
+            function createFloatingHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heartContainer.appendChild(heart);
+            }
+            
+            // Calculate viewport center position
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
+                const windowCenter = windowHeight / 2;
+                
+                // Check if element is near the center of the viewport
+                return (
+                    rect.top <= windowCenter + 200 &&
+                    rect.bottom >= windowCenter - 200
+                );
+            }
+            
+            // Handle scroll events
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const scrollHeight = infiniteScroll.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const maxScroll = scrollHeight - windowHeight;
+                const scrollPercentage = Math.min(scrollTop / maxScroll * 100, 99);
+                
+                // Update counter based on scroll position
+                loveValue = Math.floor(scrollPercentage);
+                counter.textContent = loveValue;
+                
+                // Check each milestone
+                milestones.forEach(milestone => {
+                    if (isInViewport(milestone)) {
+                        milestone.classList.add('visible');
+                    } else {
+                        milestone.classList.remove('visible');
+                    }
+                });
+                
+                // Add more hearts when scrolling down
+                if (scrollTop > lastScrollTop && Math.random() > 0.7) {
+                    createFloatingHeart();
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+            
+            // Trigger scroll event once to initialize everything
+            window.dispatchEvent(new Event('scroll'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Memories - Happy 2 Year Anniversary</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Additional CSS for memories page -->
+    <style>
+        /* Memory mosaic layout */
+        .memories-mosaic {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 250px;
+            grid-gap: 15px;
+            grid-auto-flow: dense;
+            padding: 30px 0;
+        }
+
+        .memory-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .memory-card:hover {
+            /* transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2); */
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .memory-card.wide {
+            grid-column: span 2;
+        }
+
+        .memory-card.tall {
+            grid-row: span 2;
+        }
+
+        .memory-card.wide.tall {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .memory-card:hover .memory-image {
+            transform: scale(1.1);
+        }
+
+        .memory-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .memory-card:hover .memory-overlay {
+            transform: translateY(0);
+        }
+
+        .memory-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .memory-date {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .memory-description {
+            margin-top: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Memory categories */
+        .memory-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 15px;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #333;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: #ff6b6b;
+            color: white;
+            border-color: #ff6b6b;
+        }
+
+        /* Memory modal */
+        .memory-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .memory-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 1000px;
+            max-height: 80vh;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+        }
+
+        .modal-details {
+            padding: 20px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #ff6b6b;
+        }
+
+        /* Header animation */
+        .memories-header {
+            text-align: center;
+            padding: 80px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .memories-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
+            background-size: 300% 300%;
+            /* -webkit-background-clip: text; */
+            -webkit-text-fill-color: transparent;
+            animation: gradient-text 8s ease infinite;
+        }
+
+        @keyframes gradient-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .memories-header p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #555;
+        }
+
+        /* Floating elements */
+        .memory-float {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .memory-float:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .memory-float:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .memory-float:nth-child(3) {
+            bottom: 15%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .memory-float:nth-child(4) {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 6s;
+        }
+
+        .polaroid {
+            padding: 5px 5px 10px 5px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(var(--rotation));
+            width: 100px;
+            height: 120px;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(var(--rotation)); }
+            50% { transform: translateY(-20px) rotate(calc(var(--rotation) + 3deg)); }
+            100% { transform: translateY(0) rotate(var(--rotation)); }
+        }
+
+        /* Year sections */
+        .year-divider {
+            text-align: center;
+            margin: 60px 0 30px;
+            position: relative;
+        }
+
+        .year-divider:before, .year-divider:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(255, 107, 107, 0.5), transparent);
+        }
+
+        .year-divider:before {
+            left: 0;
+        }
+
+        .year-divider:after {
+            right: 0;
+        }
+
+        .year-label {
+            display: inline-block;
+            padding: 10px 30px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #ff6b6b;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scroll animations */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* Update the memory-image class to center and properly contain images */
+        .memory-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block; /* Ensures the image is treated as a block element */
+            margin: 0 auto; /* Centers the image horizontally if it's smaller than container */
+        }
+
+        /* Fix for the images directly in memory-card (without memory-image class) */
+        .memory-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Ensure the memory card maintains proper dimensions while centering content */
+        .memory-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Maintain the hover effect for the images */
+        .memory-card:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+    <!-- <script src="script.js"></script> -->
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <div class="logo">Two Years Together</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="memories.html" class="active">Our Memories</a></li>
+                <li><a href="compliments.html">Reasons I Love You</a></li>
+                <li><a href="more.html">I Love You More</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Memories Header -->
+    <header class="memories-header">
+        <div class="memory-float polaroid" style="--rotation: -5deg;">
+            <img src="images/IMG_8711.jpeg" alt="Floating memory">
+        </div>
+        <div class="memory-float polaroid" style="--rotation: 8deg;">
+            <img src="images/064B0AA8-5411-4043-9077-409821949CA5.jpeg" alt="Floating memory">
+        </div>
+        <div class="memory-float polaroid" style="--rotation: -12deg;">
+            <img src="images/6D2949A9-C318-4850-A38B-E70086BFED88.JPG" alt="Floating memory">
+        </div>
+        <div class="memory-float polaroid" style="--rotation: 4deg;">
+            <img src="images/IMG_3586.jpeg" alt="Floating memory">
+        </div>
+        
+        <div class="container">
+            <p><br><br>Two years of love captured in moments. Each photo tells a story of our journey together, filled with laughter, adventure, and endless love.</p>
+        </div>
+    </header>
+
+    <!-- Memory Categories -->
+    <div class="container">
+
+        <div class="memories-mosaic">
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/80A85CAC-ECD6-4299-B5FB-2BE253AB4861_1_102_o.jpeg" alt="Valentines">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Valentines</h3>
+                    <div class="memory-date">Feb 14 2025</div>
+                    <p class="memory-description">I really love seeing how happy flowers make you. I wanna get you all the flowers in the world</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/9D17C0D5-65DF-471C-8C3D-C61EFBED87B3.JPG" alt="Premathlon">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Premathlon</h3>
+                    <div class="memory-date">Feb 3 2025</div>
+                    <p class="memory-description">Even though the race was messed up I really enjoyed getting to do it with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_3410.jpeg" alt="Stuco Campaigning">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Stuco Campaigning</h3>
+                    <div class="memory-date">Jan 14 2025</div>
+                    <p class="memory-description">I really appreciate all of the effort you put into it I really am so grateful</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_3352.jpeg" alt="Making chocolate">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Making chocolate</h3>
+                    <div class="memory-date">Jan 5 2025</div>
+                    <p class="memory-description">Yes a. Ian!!!! Love the big wee wee pose.</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_476BD28CDFF7-1.jpeg" alt="Making chocolate">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Making chocolate</h3>
+                    <div class="memory-date">Jan 5 2025</div>
+                    <p class="memory-description">I really enjoyed getting to go make chocolate with you it was really fun and cool. You so happyyy</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_DC71066BDB3A-1.jpeg" alt="Flower festival">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Flower festival</h3>
+                    <div class="memory-date">December 13 2024</div>
+                    <p class="memory-description">I love getting new experiences with you. Flowers were no where close to as pretty as you though</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_2941.jpeg" alt="Baby sad ☹️">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Baby sad ☹️</h3>
+                    <div class="memory-date">December 6 2024</div>
+                    <p class="memory-description">I don't like baby sad. Thats why I love making baby happy</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_8613.jpeg" alt="Getting nose sucked">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Getting nose sucked</h3>
+                    <div class="memory-date">December 6 2024</div>
+                    <p class="memory-description">Continuation of your abusiveness. trying to eat my nose</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_2926.jpeg" alt="Baby comforting">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Baby comforting</h3>
+                    <div class="memory-date">November 28 2024</div>
+                    <p class="memory-description">I love your comfort so much. I need 24/7. You make me so happy</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/064B0AA8-5411-4043-9077-409821949CA5.jpeg" alt="Halloween">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Halloween</h3>
+                    <div class="memory-date">November 1 2024</div>
+                    <p class="memory-description">I'll cook for you any day (as long as its cereal)</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_3824.jpeg" alt="Time at school">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Time at school</h3>
+                    <div class="memory-date">August 19 2024</div>
+                    <p class="memory-description">You too pretty how can I resist that</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/P1130375.jpeg" alt="Kati birthday">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Kati birthday</h3>
+                    <div class="memory-date">August 15 2024</div>
+                    <p class="memory-description">How do you always look so good</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/P1130374.jpeg" alt="Kati birthday">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Kati birthday</h3>
+                    <div class="memory-date">August 15 2024</div>
+                    <p class="memory-description">I love having sushi with you and having dinner with you. I need more</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide fade-in-element">
+                <img src="images/IMG_3057.jpeg" alt="Photo Booth">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Photo Booth</h3>
+                    <div class="memory-date">August 1 2024</div>
+                    <p class="memory-description">You look so good in this picture</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_2406.jpeg" alt="Movies">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Movies</h3>
+                    <div class="memory-date">August 1 2024</div>
+                    <p class="memory-description">Getting to go out with you is so special Its the only time I like going out</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_5008.jpeg" alt="School">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">School</h3>
+                    <div class="memory-date">June 25 2024</div>
+                    <p class="memory-description">Every moment with you at school is so special to me</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_6648.jpeg" alt="Break together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Break together</h3>
+                    <div class="memory-date">June 25 2024</div>
+                    <p class="memory-description">I love spending breaks and lunches with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/11115C72-3CF3-422A-A5B2-E91BF73D5D3C.jpeg" alt="WSC">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">WSC</h3>
+                    <div class="memory-date">June 9 2024</div>
+                    <p class="memory-description">I'm really glad to have gotten the experience with you and especially win with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall wide fade-in-element">
+                <img src="images/IMG_0755.jpeg" alt="Aquarium">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Aquarium</h3>
+                    <div class="memory-date">June 2 2024</div>
+                    <p class="memory-description">Fish cool</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_2055.jpeg" alt="Zoo">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Zoo</h3>
+                    <div class="memory-date">June 2 2024</div>
+                    <p class="memory-description">I love how excited you are whenever you're at the zoo its so cute</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/6D2949A9-C318-4850-A38B-E70086BFED88.JPG" alt="Prom together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Prom together</h3>
+                    <div class="memory-date">May 19 2024</div>
+                    <p class="memory-description">I'm so glad I got to spend prom with someone as special as you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_9905.jpeg" alt="I sleep">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">I sleep</h3>
+                    <div class="memory-date">May 7 2024</div>
+                    <p class="memory-description">I so overwhelmed by happiness with you I need to rest</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_2477.jpeg" alt="Baby Birthday party">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Baby Birthday party</h3>
+                    <div class="memory-date">May 4 2024</div>
+                    <p class="memory-description">I love getting to spend your birthday with you and see you grow up</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_9690.jpeg" alt="Dance festival">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Dance festival</h3>
+                    <div class="memory-date">May 2024</div>
+                    <p class="memory-description">You did so so good I'm so proud of you for organizing dance fest</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_9565.jpeg" alt="Hello Kitty">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Hello Kitty</h3>
+                    <div class="memory-date">May 2024</div>
+                    <p class="memory-description">Love those pants. Love matching with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_9541.jpeg" alt="Bubbleee !!!">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Bubbleee !!!</h3>
+                    <div class="memory-date">May 1 2024</div>
+                    <p class="memory-description">I'm very proud of your bubble baby</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_8711.jpeg" alt="Getting abused">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Getting abused</h3>
+                    <div class="memory-date">April 4 2024</div>
+                    <p class="memory-description">The start of your obsession abusing me</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_6326.jpeg" alt="Lunch together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Lunch together</h3>
+                    <div class="memory-date">March 4 2024</div>
+                    <p class="memory-description">I love every single lunch with you everyday. My favorite meals</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_7996.jpeg" alt="Photo Booth">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Photo Booth</h3>
+                    <div class="memory-date">February 24 2024</div>
+                    <p class="memory-description">Baby bullying me from that pic in the top right. You look so good in all of the pics</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_7988.jpeg" alt="Going over">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Going over</h3>
+                    <div class="memory-date">February 24 2024</div>
+                    <p class="memory-description">Post 2nd wisdom teeth removal</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_6257.jpeg" alt="Wisdom teeth (2nd)">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Wisdom teeth (2nd)</h3>
+                    <div class="memory-date">February 24 2024</div>
+                    <p class="memory-description">Baby more prepared! I hated you being in pain though ☹️</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_6070.jpeg" alt="First Valentines">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">First Valentines</h3>
+                    <div class="memory-date">February 14 2024</div>
+                    <p class="memory-description">I loved getting to my first valentines dinner with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_6024.jpeg" alt="First Valentines">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">First Valentines</h3>
+                    <div class="memory-date">February 14 2024</div>
+                    <p class="memory-description">I love getting to see how happy you are when you get flowers</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_5982.jpeg" alt="At school together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">At school together</h3>
+                    <div class="memory-date">February 9 2024</div>
+                    <p class="memory-description">Being with you at school makes it so so much better. You make me so happy</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_5959.jpeg" alt="Wisdom teeth (1st)">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Wisdom teeth (1st)</h3>
+                    <div class="memory-date">February 3 2024</div>
+                    <p class="memory-description">I'm really glad I could've been there for you and make it less bad</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_7337.JPG" alt="Cool performances">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Cool performances</h3>
+                    <div class="memory-date">February 3 2024</div>
+                    <p class="memory-description">We should wear our matching hats more</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall wide fade-in-element">
+                <img src="images/IMG_6760.jpeg" alt="Baby">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Baby</h3>
+                    <div class="memory-date">Not sure when this was</div>
+                    <p class="memory-description">Babyyyyyyyyyy so cuteeeeeee</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall wide fade-in-element">
+                <img src="images/IMG_7415.jpeg" alt="International Day">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">International Day</h3>
+                    <div class="memory-date">January 12 2024</div>
+                    <p class="memory-description">I really want another international day to carry flag with you again ☹️</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_5834.jpeg" alt="Performing with Claron">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Performing with Claron</h3>
+                    <div class="memory-date">January 8 2024</div>
+                    <p class="memory-description">I love getting to have new experiences with you and do so many cool things</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/A328C37B-87A3-46F2-92C9-C3A63D67EDB2.jpeg" alt="New years">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">New years</h3>
+                    <div class="memory-date">January 1 2024</div>
+                    <p class="memory-description">Getting to go into the new year really meant so much and was so nice</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_5773.jpeg" alt="New years">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">New years</h3>
+                    <div class="memory-date">January 1 2024</div>
+                    <p class="memory-description">I really loved getting to spend time with you and make marshmallows (hoodie looks familiar again)</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/40264CEB-E0D3-438C-B86B-2F33C4175E1E.JPG" alt="New years">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">New years</h3>
+                    <div class="memory-date">January 1st 2024</div>
+                    <p class="memory-description">Love holding feet with you. We should do more often</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_6206.jpeg" alt="Photo Booth">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Photo Booth</h3>
+                    <div class="memory-date">December 27 2023</div>
+                    <p class="memory-description">I love every single picture we have together so so much</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_5722.jpeg" alt="Going over">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Going over</h3>
+                    <div class="memory-date">December 27 2023</div>
+                    <p class="memory-description">You really so so pretty</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_5545.jpeg" alt="School">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">School</h3>
+                    <div class="memory-date">December 15 2023</div>
+                    <p class="memory-description">I really love every second of our time together at school (your hoodie looks rather familiar)</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_5535.jpeg" alt="Food bank donation trip">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Food bank donation trip</h3>
+                    <div class="memory-date">December 12 2023</div>
+                    <p class="memory-description">I love doing anything at all if its with you.</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_5430.jpeg" alt="Going over">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Going over</h3>
+                    <div class="memory-date">November 19 2023</div>
+                    <p class="memory-description">I really miss going over and cuddling. I want</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_5361.JPG" alt="Halloween">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Halloween</h3>
+                    <div class="memory-date">October 27 2023</div>
+                    <p class="memory-description">You looked so good</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall wide fade-in-element">
+                <img src="images/IMG_5321.jpeg" alt="Halloween">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Halloween</h3>
+                    <div class="memory-date">October 27 2023</div>
+                    <p class="memory-description">Loved being your robber</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_3586.jpeg" alt="Fancy food">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Fancy food</h3>
+                    <div class="memory-date">October 15 2023</div>
+                    <p class="memory-description">I wouldn't usually go eat somewhere fancy but with you I'd do anything</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_5237.jpeg" alt="Cuddling together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Cuddling together</h3>
+                    <div class="memory-date">October 15 2023</div>
+                    <p class="memory-description">I really loved going over and just getting to cuddle up together</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_2898.jpeg" alt="Zara">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Zara</h3>
+                    <div class="memory-date">October 7 2023</div>
+                    <p class="memory-description">You showing me Zara and clothes. You somehow made even Zara fun</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_2298.jpeg" alt="NIS concert">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">NIS concert</h3>
+                    <div class="memory-date">September 16 2023</div>
+                    <p class="memory-description">You showing me around NIS was so nice and fun</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall wide fade-in-element">
+                <img src="images/IMG_2247.jpeg" alt="NIS concert">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">NIS concert</h3>
+                    <div class="memory-date">September 15 2023</div>
+                    <p class="memory-description">I loved getting to be where your childhood was and you showing me it all</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_0483.jpeg" alt="ISB trip">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">ISB trip</h3>
+                    <div class="memory-date">September 9 2023</div>
+                    <p class="memory-description">Baby so cute</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_0478.jpeg" alt="ISB trip">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">ISB trip</h3>
+                    <div class="memory-date">September 9 2023</div>
+                    <p class="memory-description">You're so pretty</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_4950.jpeg" alt="ISB trip">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">ISB trip</h3>
+                    <div class="memory-date">September 9 2023</div>
+                    <p class="memory-description">I loved every single second of that trip with you. It really was so nice</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_9618.jpeg" alt="At the movies">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">At the movies</h3>
+                    <div class="memory-date">August 19 2023</div>
+                    <p class="memory-description">Watching movies with you makes movies so much better. I love cuddling with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_5084.jpeg" alt="Kati birthday">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Kati birthday</h3>
+                    <div class="memory-date">August 15 2023</div>
+                    <p class="memory-description">That restaurant was really good and I got to try foie gras for the first time</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_9998.jpeg" alt="Going over">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Going over</h3>
+                    <div class="memory-date">July 17 2023</div>
+                    <p class="memory-description">I really loved every single time I got to go over and spend time with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_3105.jpg" alt="Ferris wheel">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Ferris wheel</h3>
+                    <div class="memory-date">June 25 2023</div>
+                    <p class="memory-description">I really love ferris wheel so much. I still have it in my table</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_9254.jpeg" alt="Baby bullying me ☹️">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Baby bullying me ☹️</h3>
+                    <div class="memory-date">June 25 2023</div>
+                    <p class="memory-description">Had to give me painful face mask + do brows + spicy noodles. You really hated me</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_2981.jpeg" alt="Walk around school">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Walk around school</h3>
+                    <div class="memory-date">June 2 2023</div>
+                    <p class="memory-description">Going on our walk around school and spending after schools together</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide fade-in-element">
+                <img src="images/IMG_2950.jpeg" alt="Foot massage">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Foot massage</h3>
+                    <div class="memory-date">May 28 2023</div>
+                    <p class="memory-description">First ever foot massage and it got to be with you!</p>
+                </div>
+            </div>
+        
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_2935.jpeg" alt="Walking street">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Walking street</h3>
+                    <div class="memory-date">May 28 2023</div>
+                    <p class="memory-description">We went to walking street together and got to try so many things</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_A330F1B67288-1.jpeg" alt="Prom">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Prom</h3>
+                    <div class="memory-date">May 20 2023</div>
+                    <p class="memory-description">You were so so pretty that night. I couldn't believe it</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/IMG_18E755F789AB-1.jpeg" alt="Prom">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Prom</h3>
+                    <div class="memory-date">May 20 2023</div>
+                    <p class="memory-description">My first Prom ever with my favorite girl ever. What could be better</p>
+                </div>
+            </div>
+        
+            <div class="memory-card tall fade-in-element">
+                <img src="images/89C0C6BF-A7C8-494C-9F9F-F02E5AF182CF.JPG" alt="First time going over">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">First time going over</h3>
+                    <div class="memory-date">May 14 2023</div>
+                    <p class="memory-description">Finally getting to go over for the first time and spend lots of time with you</p>
+                </div>
+            </div>
+        
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/426C04DD-53FF-4991-91F2-20EA243E2F5C.JPG" alt="Face masks">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Face masks</h3>
+                    <div class="memory-date">May 14 2023</div>
+                    <p class="memory-description">First time getting face mask with you</p>
+                </div>
+            </div>
+            <div class="memory-card wide tall fade-in-element">
+                <img src="images/626C06E7-609E-4490-ACFB-83E6BE801D09.JPG" alt="Going over">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Going over</h3>
+                    <div class="memory-date">May 14 2023</div>
+                    <p class="memory-description">Getting to explore around your house together</p>
+                </div>
+            </div>
+
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_2784.jpg" alt="Birthday party">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Birthday party</h3>
+                    <div class="memory-date">May 6 2023</div>
+                    <p class="memory-description">Our first kiss! I really loved getting to swim and be with you</p>
+                </div>
+            </div>
+
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_2561.jpg" alt="Volleyball">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Volleyball</h3>
+                    <div class="memory-date">April 26 2023</div>
+                    <p class="memory-description">Youre so good at volleyball I'm so proud of you </p>
+                </div>
+            </div>
+
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_7517.jpeg" alt="Burger together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Burger together</h3>
+                    <div class="memory-date">April 22 2023</div>
+                    <p class="memory-description">Our date around maya and nimman</p>
+                </div>
+            </div>
+
+            <div class="memory-card fade-in-element">
+                <img src="images/3DB3266A-E06F-4499-A983-9D844A6E188B.JPG" alt="Junior school performance">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Junior school performance</h3>
+                    <div class="memory-date">April 18 2023</div>
+                    <p class="memory-description">Us getting extra time together (and I getting to skip chemistry!)</p>
+                </div>
+            </div>
+
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_8231.jpeg" alt="Songkran together">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Songkran together</h3>
+                    <div class="memory-date">April 7 2023</div>
+                    <p class="memory-description">Getting to do things like songkran is so nice and gives us extra time together</p>
+                </div>
+            </div>
+
+            <div class="memory-card tall wide fade-in-element">
+                <img src="images/6B4972D4-BB26-429D-B64D-16883F6649BD.JPG" alt="First date">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">First date</h3>
+                    <div class="memory-date">March 22 2023</div>
+                    <p class="memory-description">Our first date to the zoo together </p>
+                </div>
+            </div>
+
+            <div class="memory-card tall fade-in-element">
+                <img src="images/IMG_1763.PNG" alt="First MUN">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">First MUN</h3>
+                    <div class="memory-date">March 8 2023</div>
+                    <p class="memory-description">Our first time going somewhere together</p>
+                </div>
+            </div>
+
+            <div class="memory-card fade-in-element">
+                <img src="images/C1014406-DC66-46EE-A88E-3402A0087A64.JPG" alt="International Day">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">International Day</h3>
+                    <div class="memory-date">January 28 2023</div>
+                    <p class="memory-description">Our first photo together!</p>
+                </div>
+            </div>
+
+            <div class="memory-card fade-in-element">
+                <img src="images/IMG_1556.jpeg" alt="Basketball">
+                <div class="memory-overlay">
+                    <h3 class="memory-title">Basketball</h3>
+                    <div class="memory-date">January 20 2023</div>
+                    <p class="memory-description">Baby asleep after doing so good in basketball</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memory Modal -->
+    <div class="memory-modal">
+        <div class="modal-content">
+            <div class="modal-close"><i class="fas fa-times"></i></div>
+            <img src="" alt="Memory" class="modal-image">
+            <div class="modal-details">
+                <h2 class="memory-title"></h2>
+                <div class="memory-date"></div>
+                <p class="memory-description"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional JavaScript for Memories page -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fade in elements on scroll
+            const fadeElements = document.querySelectorAll('.fade-in-element');
+            
+            function checkFade() {
+                fadeElements.forEach(element => {
+                    if (!element.classList.contains('visible')) {
+                        const elementTop = element.getBoundingClientRect().top;
+                        const elementBottom = element.getBoundingClientRect().bottom;
+                        const isVisible = (elementTop < window.innerHeight - 100) && (elementBottom > 0);
+                        
+                        if (!isVisible) {
+                            element.classList.add('visible');
+                        }
+                    }
+                });
+            }
+            
+            // Check on initial load
+            checkFade();
+            
+            // Check on scroll
+            window.addEventListener('scroll', checkFade);
+            
+            // Category filtering
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const memoryCards = document.querySelectorAll('.memory-card');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // Filter memory cards
+                    memoryCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Memory modal functionality
+            const memoryModal = document.querySelector('.memory-modal');
+            const modalImage = document.querySelector('.modal-image');
+            const modalTitle = document.querySelector('.modal-title');
+            const modalDate = document.querySelector('.memory-date');
+            const modalDescription = document.querySelector('.memory-description');
+            const modalClose = document.querySelector('.modal-close');
+            
+            memoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const image = this.querySelector('.memory-image').src;
+                    const title = this.querySelector('.memory-title').textContent;
+                    const date = this.querySelector('.memory-date').textContent;
+                    const description = this.querySelector('.memory-description').textContent;
+                    
+                    modalImage.src = image;
+                    modalTitle.textContent = title;
+                    modalDate.textContent = date;
+                    modalDescription.textContent = description;
+                    
+                    memoryModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            modalClose.addEventListener('click', function() {
+                memoryModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            memoryModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    memoryModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>
+
+<footer class="footer-section">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-message">
+                <p>I love you more</p>
+                <p>I'm so grateful for everyday with you</p>
+            </div>
+            <div class="footer-heart">
+                <div class="beating-heart"></div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 - Nathan Thurber</p>
+                <p>Made with love for the love of my life</p>
+            </div>
+        </div>
+    </div>
+</footer>  
+</body>
+</html>
