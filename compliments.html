@@ -449,9 +449,9 @@
     <!-- Compliments Section -->
     <section class="compliments-section">
         <div class="container">
-            <div class="search-container">
+            <!-- <div class="search-container">
                 <input type="text" class="search-box" id="searchBox" placeholder="Search for a specific reason...">
-            </div>
+            </div> -->
             
             <!-- <div class="category-filter">
                 <button class="filter-btn active" data-filter="all">All Reasons</button>
@@ -622,28 +622,28 @@
             });
             
             // Search functionality
-            const searchBox = document.getElementById('searchBox');
-            searchBox.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
+            // const searchBox = document.getElementById('searchBox');
+            // searchBox.addEventListener('input', function() {
+            //     const searchTerm = this.value.toLowerCase();
                 
-                cards.forEach(card => {
-                    const text = card.querySelector('.compliment-text').textContent.toLowerCase();
+            //     cards.forEach(card => {
+            //         const text = card.querySelector('.compliment-text').textContent.toLowerCase();
                     
-                    if (text.includes(searchTerm)) {
-                        card.style.display = '';
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        }, 100);
-                    } else {
-                        card.style.opacity = '0';
-                        card.style.transform = 'translateY(50px)';
-                        setTimeout(() => {
-                            card.style.display = 'none';
-                        }, 300);
-                    }
-                });
-            });
+            //         if (text.includes(searchTerm)) {
+            //             card.style.display = '';
+            //             setTimeout(() => {
+            //                 card.style.opacity = '1';
+            //                 card.style.transform = 'translateY(0)';
+            //             }, 100);
+            //         } else {
+            //             card.style.opacity = '0';
+            //             card.style.transform = 'translateY(50px)';
+            //             setTimeout(() => {
+            //                 card.style.display = 'none';
+            //             }, 300);
+            //         }
+            //     });
+            // });
             
             // Load More button functionality
             // This simulates loading more compliments, but you'd likely replace this with your actual content
